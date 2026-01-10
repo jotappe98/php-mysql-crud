@@ -59,6 +59,7 @@ body {
   background-color: #fdde59;
   color: #212529;
   border-color: #212529;
+  margin-top: 10px;
 }
 
 /*Alerta*/
@@ -88,6 +89,28 @@ body {
   color: #fdde59;
   border-color: #212529;
   transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+/*Estilização dos selects*/
+
+.form-control {
+  background-color: #fdde59;
+  color: #212529;
+  border: 1px solid #212529;
+}
+
+.form-select {
+  background-color: #fdde59;
+  border: 2px solid #212529;
+  color: #212529;
+  box-shadow: none;
+}
+
+.form-select:focus {
+  background-color: #fdde59;
+  border-color: #212529;
+  box-shadow: none;
+  box-shadow: none;
 }
 
 /*Footer*/

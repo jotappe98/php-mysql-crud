@@ -1,8 +1,8 @@
 <?php
     session_start();
 
-    $user = "*******";
-    $pass = "*******";
+    $user = "jotape";
+    $pass = "jotape";
     $db = "pizzaria";
     $host = "localhost";
 
