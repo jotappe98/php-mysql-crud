@@ -1,6 +1,6 @@
 <footer>
 
-    <p>Elo's Pizza &copy; 2026</p>
+    <p>© <?= date('Y') ?> Elo's Pizza. All Rights Reserved</p>
 
 </footer>
 <!--Bootstrap JS-->

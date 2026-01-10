@@ -1,3 +1,22 @@
+<?php
+    include_once("process/conn.php");
+
+    $msg = "";
+
+    if (isset($_SESSION["msg"])) {
+
+        $msg = $_SESSION["msg"];
+        $status = $_SESSION["status"];
+
+        $_SESSION["msg"] = "";
+        $_SESSION["status"] = "";
+
+    }
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,6 +36,7 @@
 
 
 
+
     <nav class="navbar navbar-dark bg-dark">
         <a class="navbar-brand d-flex align-items-center gap-2" href="index.php">
             <img src="/php-mysql-crud/assets/img/pizza.svg" alt="Elo's Pizza" id="brand-logo">
@@ -25,20 +45,15 @@
             </span>
         </a>
     </nav>
-      <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a href="index.php" class="navbar-brand d-flex align-items-center">
-                <img src="/php-mysql-crud/assets/img/pizza.svg" alt="Elo's Pizza" id="brand-logo">
-            </a>
+</header>
 
-            <div class="navbar-collapse">
-                <ul class="navbar-nav ms-3">
-                    <li class="nav-item">
-                        <a href="index.php" class="nav-link">
-                            Bem vindo(a)! Peça sua pizza.
-                        </a>
-                    </li>
-                </ul>
-            </div>
 
-        </nav> -->
-    </header>
+<?php if($msg != ""): ?>
+
+<div class="alert alert-<?= $status ?>">
+    <p>
+        <?=  $msg ?>
+    </p>
+</div>
+
+<?php endif; ?>
