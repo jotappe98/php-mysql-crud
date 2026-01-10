@@ -55,6 +55,23 @@
 
                 }
 
+                //Cria o pedido
+
+                $stmt = $conn->prepare("INSERT INTO pedidos(pizza_id, status_id) VALUES (:pizza, :status)");
+
+                //Status inicia com 1
+                $statusId = 1; //Em produção
+
+                $stmt->bindParam(":pizza", $pizzaId);
+                $stmt->bindParam(":status", $statusId);
+
+                $stmt->execute();
+
+                //200 Ok
+
+                $_SESSION["msg"] = "Pedido realizado com sucesso!";
+                $_SESSION["status"] = "success";
+
             }
 
             //Volta pra home

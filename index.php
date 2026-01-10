@@ -14,9 +14,9 @@
                         <div class="form-group">
                             <label for="borda">Borda:</label>
                             <select name="borda" id="borda" class="form-control form-select">
-                                <option class="opt" value="">Selecione a borda</option>
+                                <option  value="">Selecione a borda</option>
                                 <?php foreach($bordas as $borda): ?>
-                                <option class="opt" value="<?= $borda["id"] ?>"><?= $borda["tipo"] ?></option>
+                                <option value="<?= $borda["id"] ?>"><?= $borda["tipo"] ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -33,7 +33,7 @@
                             <label for="sabores">Sabores:(Máximo 3)</label>
                             <select multiple name="sabores[]" id="sabores" class="form-control form-select">
                                <?php foreach($sabores as $sabor): ?>
-                                <option class="opt" value="<?= $sabor["id"] ?>"><?= $sabor["nome"] ?></option>
+                                <option  value="<?= $sabor["id"] ?>"><?= $sabor["nome"] ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
