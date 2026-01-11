@@ -27,24 +27,6 @@ Permite criar pedidos, atualizar status e deletar pedidos, com interação diret
 
 ---
 
-## Estrutura do Projeto
-
-/php-mysql-crud
-├─ indexa.php  
-├─ dashboard.php  
-├─ /templates
-│ ├─ header.php
-│ └─ footer.php
-├─ /process
-│ ├─ pizza.php  
-│ ├─ orders.php  
-│ ├─ update_order_status.php
-│ └─ orders_fetch.php  
-└─ /assets
-└─ CSS, imagens, etc.
-
----
-
 ## Observações
 
 - Cada ação no backend possui um arquivo específico.

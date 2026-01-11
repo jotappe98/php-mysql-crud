@@ -10,11 +10,9 @@ if (session_status() === PHP_SESSION_NONE) {
 
 $method = $_SERVER["REQUEST_METHOD"];
 
-/*
-|--------------------------------------------------------------------------
-| GET → Buscar dados para montar o formulário
-|--------------------------------------------------------------------------
-*/
+// Busca dados para montar o formulário
+
+
 if ($method === "GET") {
 
     $bordasQuery = $conn->query("SELECT * FROM bordas;");
@@ -26,18 +24,15 @@ if ($method === "GET") {
     $saboresQuery = $conn->query("SELECT * FROM sabores;");
     $sabores = $saboresQuery->fetchAll(PDO::FETCH_ASSOC);
 
-/*
-|--------------------------------------------------------------------------
-| POST → Criação do pedido
-|--------------------------------------------------------------------------
-*/
+// Cria pedido
+
 } else if ($method === "POST") {
 
     $borda   = $_POST["borda"]   ?? null;
     $massa   = $_POST["massa"]   ?? null;
     $sabores = $_POST["sabores"] ?? [];
 
-    // Validação: campos obrigatórios
+   //Valida campos obrigatórios
     if (!$borda || !$massa || empty($sabores)) {
         $_SESSION["msg"] = "Preencha todos os campos do pedido.";
         $_SESSION["status"] = "warning";
@@ -79,7 +74,7 @@ if ($method === "GET") {
         }
 
         // Cria pedido
-        $statusId = 1; // Status inicial
+        $statusId = 1; 
 
         $stmt = $conn->prepare(
             "INSERT INTO pedidos (pizza_id, status_id) VALUES (:pizza, :status)"

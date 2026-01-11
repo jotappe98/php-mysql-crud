@@ -3,12 +3,7 @@
 // Conexão com banco
 include_once("conn.php");
 
-/*
-|--------------------------------------------------------------------------
-| BUSCA DE PEDIDOS (GET)
-| Arquivo exclusivo para montar a dashboard
-|--------------------------------------------------------------------------
-*/
+
 
 // Busca pedidos
 $pedidosQuery = $conn->query("SELECT * FROM pedidos;");
@@ -21,11 +16,8 @@ foreach ($pedidos as $pedido) {
     $pizza = [];
     $pizza["id"] = $pedido["pizza_id"];
 
-    /*
-    |--------------------------------------------------------------------------
-    | DADOS DA PIZZA
-    |--------------------------------------------------------------------------
-    */
+    //Dados pizza
+
     $pizzaQuery = $conn->prepare(
         "SELECT * FROM pizzas WHERE id = :pizza_id"
     );
@@ -39,11 +31,7 @@ foreach ($pedidos as $pedido) {
         continue;
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | BORDA
-    |--------------------------------------------------------------------------
-    */
+   //Borda
     $bordaQuery = $conn->prepare(
         "SELECT * FROM bordas WHERE id = :borda_id"
     );
@@ -53,11 +41,7 @@ foreach ($pedidos as $pedido) {
     $borda = $bordaQuery->fetch(PDO::FETCH_ASSOC);
     $pizza["borda"] = $borda["tipo"] ?? null;
 
-    /*
-    |--------------------------------------------------------------------------
-    | MASSA
-    |--------------------------------------------------------------------------
-    */
+    //Massa
     $massaQuery = $conn->prepare(
         "SELECT * FROM massas WHERE id = :massa_id"
     );
@@ -67,11 +51,7 @@ foreach ($pedidos as $pedido) {
     $massa = $massaQuery->fetch(PDO::FETCH_ASSOC);
     $pizza["massa"] = $massa["tipo"] ?? null;
 
-    /*
-    |--------------------------------------------------------------------------
-    | SABORES
-    |--------------------------------------------------------------------------
-    */
+    //Sabores
     $saboresQuery = $conn->prepare(
         "SELECT * FROM pizza_sabor WHERE pizza_id = :pizza_id"
     );
@@ -100,20 +80,12 @@ foreach ($pedidos as $pedido) {
 
     $pizza["sabores"] = $saboresDaPizza;
 
-    /*
-    |--------------------------------------------------------------------------
-    | STATUS DO PEDIDO
-    |--------------------------------------------------------------------------
-    */
+    //Status pedido
     $pizza["status"] = $pedido["status_id"];
 
     $pizzas[] = $pizza;
 }
 
-/*
-|--------------------------------------------------------------------------
-| STATUS DISPONÍVEIS
-|--------------------------------------------------------------------------
-*/
+//Status disponíveis
 $statusQuery = $conn->query("SELECT * FROM status;");
 $status = $statusQuery->fetchAll(PDO::FETCH_ASSOC);

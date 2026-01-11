@@ -5,7 +5,7 @@ session_start();
 // Header
 include_once("templates/header.php");
 
-// Busca pedidos (GET)
+// Busca pedidos 
 include_once("process/orders_fetch.php");
 ?>
 
