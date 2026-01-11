@@ -30,17 +30,16 @@ Permite criar pedidos, atualizar status e deletar pedidos, com interação diret
 ## Estrutura do Projeto
 
 /php-mysql-crud
-├─ indexa.php # Home - formulário de pedidos
-├─ dashboard.php # Dashboard de pedidos
+├─ indexa.php  
+├─ dashboard.php  
 ├─ /templates
 │ ├─ header.php
 │ └─ footer.php
 ├─ /process
-│ ├─ conn.php # Conexão com banco
-│ ├─ pizza.php # Criação de pedidos
-│ ├─ orders.php # Exclusão de pedidos
-│ ├─ update_order_status.php # Atualização de status
-│ └─ orders_fetch.php # Busca de pedidos e status
+│ ├─ pizza.php  
+│ ├─ orders.php  
+│ ├─ update_order_status.php
+│ └─ orders_fetch.php  
 └─ /assets
 └─ CSS, imagens, etc.
 
