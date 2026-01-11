@@ -1,21 +1,26 @@
 <?php
-    session_start();
 
-    $user = "********";
-    $pass = "********";
-    $db = "pizzaria";
-    $host = "localhost";
+// Dados de conexão
+$host = "localhost";
+$db   = "pizzaria";
+$user = "jotape";
+$pass = "jotape";
 
-    try {
+try {
 
-        $conn =  new PDO("mysql:host=$host;dbname=$db", $user , $pass);
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $conn->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+    $conn = new PDO(
+        "mysql:host=$host;dbname=$db;charset=utf8",
+        $user,
+        $pass
+    );
 
-    }catch (PDOException $e) {
-        print "Erro:" .$e->getMessage() . "<br/>";
-        die();
-    }
-?>
+    // Mostra erros do banco como exceção
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+    // Desativa emulação de prepared statements
+    $conn->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
+} catch (PDOException $e) {
+    echo "Erro na conexão com o banco: " . $e->getMessage();
+    exit;
+}

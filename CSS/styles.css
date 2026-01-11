@@ -91,6 +91,45 @@ body {
   transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
 
+/*Dashboard*/
+.delete-btn,
+.update-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.delete-btn {
+  padding-top: 10px;
+}
+
+.delete-btn i {
+  color: #721c24;
+  font-size: 20px;
+}
+
+.update-btn i {
+  color: #004085;
+}
+
+.update-btn {
+  margin-left: 10px;
+}
+
+.update-form {
+  display: flex;
+  flex-direction: row;
+}
+
+.status-input {
+  width: 65%;
+}
+
+.table-ul {
+  text-align: left;
+}
+
 /*Estilização dos selects*/
 
 .form-control {
@@ -125,4 +164,60 @@ footer {
   align-items: center;
   justify-content: center;
   font-weight: bold;
+}
+
+/*Responsividade*/
+
+/*home*/
+
+@media (max-width: 768px) {
+  #main-banner {
+    background-position-y: 0;
+  }
+
+  #main-banner h1 {
+    padding: 10px;
+  }
+
+  #main-container {
+    margin-bottom: 0;
+  }
+
+  #main-container .container {
+    padding: 10px;
+  }
+
+  .form-group .btn.btn-primary {
+    width: 100%;
+    height: 50px;
+    margin-top: 15px;
+    text-transform: uppercase;
+  }
+
+  .form-group .btn.btn-primary:hover {
+    background-color: #212529;
+    color: #fdde59;
+  }
+
+  /*dashboard*/
+
+  .table-container {
+    padding: 0;
+  }
+
+  .table td,
+  .table th {
+    padding: 0.5rem;
+  }
+
+  th span {
+    display: none;
+  }
+
+  .table thead th:nth-child(5),
+  .table thead th:nth-child(6),
+  .table tbody td:nth-child(5),
+  .table tbody td:nth-child(6) {
+    display: none;
+  }
 }

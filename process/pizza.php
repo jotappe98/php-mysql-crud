@@ -1,83 +1,110 @@
 <?php
 
-    include_once("conn.php");
+// Conexão com banco
+include_once("conn.php");
 
+// Sessão só se ainda não estiver ativa
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-    $method = $_SERVER['REQUEST_METHOD'];
-        //Pega os dados, montagem pedido
-        if($method === "GET") {
+$method = $_SERVER["REQUEST_METHOD"];
 
-            $bordasQuery = $conn->query ("SELECT * FROM bordas;");
-            $bordas = $bordasQuery->fetchAll();
+/*
+|--------------------------------------------------------------------------
+| GET → Buscar dados para montar o formulário
+|--------------------------------------------------------------------------
+*/
+if ($method === "GET") {
 
-            $massasQuery = $conn->query ("SELECT * FROM massas;");
-            $massas = $massasQuery->fetchAll();
+    $bordasQuery = $conn->query("SELECT * FROM bordas;");
+    $bordas = $bordasQuery->fetchAll(PDO::FETCH_ASSOC);
 
-            $saboresQuery = $conn->query ("SELECT * FROM sabores;");
-            $sabores = $saboresQuery->fetchAll();
+    $massasQuery = $conn->query("SELECT * FROM massas;");
+    $massas = $massasQuery->fetchAll(PDO::FETCH_ASSOC);
 
+    $saboresQuery = $conn->query("SELECT * FROM sabores;");
+    $sabores = $saboresQuery->fetchAll(PDO::FETCH_ASSOC);
 
-        //Criação do pedido
-        } else if ($method === "POST") {
+/*
+|--------------------------------------------------------------------------
+| POST → Criação do pedido
+|--------------------------------------------------------------------------
+*/
+} else if ($method === "POST") {
 
-            $data = $_POST;
+    $borda   = $_POST["borda"]   ?? null;
+    $massa   = $_POST["massa"]   ?? null;
+    $sabores = $_POST["sabores"] ?? [];
 
-            $borda = $data['borda'];
-            $massa = $data['massa'];
-            $sabores = $data['sabores'];
+    // Validação: campos obrigatórios
+    if (!$borda || !$massa || empty($sabores)) {
+        $_SESSION["msg"] = "Preencha todos os campos do pedido.";
+        $_SESSION["status"] = "warning";
+        header("Location: ../index.php");
+        exit;
+    }
 
-            // Validação, máximo 3 sabores
+    // Validação: máximo 3 sabores
+    if (count($sabores) > 3) {
+        $_SESSION["msg"] = "Selecione no máximo 3 sabores.";
+        $_SESSION["status"] = "warning";
+        header("Location: ../index.php");
+        exit;
+    }
 
-           if (count($sabores) > 3) {
-                // Retorna erro
-                $_SESSION["msg"] = "Selecione no máximo 3 sabores";
-                $_SESSION["status"] = "warning";
-            } else {
-                
-                $stmt = $conn->prepare("INSERT INTO pizzas (borda_id, massa_id) VALUES (:borda, :massa)");
+    try {
+        // Inicia transação
+        $conn->beginTransaction();
 
-                $stmt->bindParam(":borda", $borda, PDO::PARAM_INT);
-                $stmt->bindParam(":massa", $massa, PDO::PARAM_INT);
+        // Cria pizza
+        $stmt = $conn->prepare(
+            "INSERT INTO pizzas (borda_id, massa_id) VALUES (:borda, :massa)"
+        );
+        $stmt->bindParam(":borda", $borda, PDO::PARAM_INT);
+        $stmt->bindParam(":massa", $massa, PDO::PARAM_INT);
+        $stmt->execute();
 
-                $stmt->execute();
+        $pizzaId = $conn->lastInsertId();
 
-                $pizzaId = $conn->lastInsertId();
+        // Relaciona sabores
+        $stmt = $conn->prepare(
+            "INSERT INTO pizza_sabor (pizza_id, sabor_id) VALUES (:pizza, :sabor)"
+        );
 
-
-                $stmt = $conn->prepare("INSERT INTO pizza_sabor (pizza_id, sabor_id) VALUES (:pizza, :sabor)");
-
-                foreach ($sabores as $sabor) {
-
-                    $stmt->bindParam (":pizza", $pizzaId, PDO::PARAM_INT);
-                    $stmt->bindParam (":sabor", $sabor, PDO::PARAM_INT);
-
-                    $stmt->execute();
-
-                }
-
-                //Cria o pedido
-
-                $stmt = $conn->prepare("INSERT INTO pedidos(pizza_id, status_id) VALUES (:pizza, :status)");
-
-                //Status inicia com 1
-                $statusId = 1; //Em produção
-
-                $stmt->bindParam(":pizza", $pizzaId);
-                $stmt->bindParam(":status", $statusId);
-
-                $stmt->execute();
-
-                //200 Ok
-
-                $_SESSION["msg"] = "Pedido realizado com sucesso!";
-                $_SESSION["status"] = "success";
-
-            }
-
-            //Volta pra home
-            header("Location: ..");
-            exit();
+        foreach ($sabores as $sabor) {
+            $stmt->bindParam(":pizza", $pizzaId, PDO::PARAM_INT);
+            $stmt->bindParam(":sabor", $sabor, PDO::PARAM_INT);
+            $stmt->execute();
         }
-?>
 
+        // Cria pedido
+        $statusId = 1; // Status inicial
+
+        $stmt = $conn->prepare(
+            "INSERT INTO pedidos (pizza_id, status_id) VALUES (:pizza, :status)"
+        );
+        $stmt->bindParam(":pizza", $pizzaId, PDO::PARAM_INT);
+        $stmt->bindParam(":status", $statusId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // Confirma transação
+        $conn->commit();
+
+        $_SESSION["msg"] = "Pedido realizado com sucesso!";
+        $_SESSION["status"] = "success";
+
+    } catch (Exception $e) {
+
+        // Cancela tudo se der erro
+        $conn->rollBack();
+
+        $_SESSION["msg"] = "Erro ao realizar o pedido.";
+        $_SESSION["status"] = "danger";
+    }
+
+    // Volta para a home
+    header("Location: /php-mysql-crud/index.php");
+    exit;
+}
 
