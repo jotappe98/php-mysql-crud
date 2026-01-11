@@ -3,8 +3,8 @@
 // Dados de conexão
 $host = "localhost";
 $db   = "pizzaria";
-$user = "jotape";
-$pass = "jotape";
+$user = "*******";
+$pass = "*******";
 
 try {
 
