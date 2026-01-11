@@ -11,7 +11,8 @@ Permite criar pedidos, atualizar status e deletar pedidos, com interação diret
 
 - PHP 8.2
 - MySQL
-- HTML5 / CSS3 (responsivo)
+- HTML5 / CSS3
+- Bootstrap 5
 - PDO com prepared statements
 - Sessões PHP (`$_SESSION`)
 
